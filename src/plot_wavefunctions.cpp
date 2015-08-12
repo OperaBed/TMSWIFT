@@ -31,9 +31,6 @@ void read_input(char **argv, params *params)
         std::string ifile_n;
         std::string null;
 
-        double datar;
-        int  datai;
-
         ifile_n = argv[1];
         ifile.open(ifile_n.c_str());
 
@@ -169,7 +166,7 @@ int main(int argc, char *argv[])
 
 	}	
 	gfile.close();	
-	std::system("gnuplot plot_wave");
-	std::system("rm plot_wave");
+	s=std::system("gnuplot plot_wave");
+	s=std::system("rm plot_wave");
 	return 0;
 }
