@@ -46,6 +46,10 @@ void eigensolver(PetscErrorCode ierr, params *params, Mat &H, int argc, char **a
   	ierr = PCSetType(pc,PCCHOLESKY);CHKERRV(ierr);
 	ierr = EPSKrylovSchurSetPartitions(eps,size);CHKERRV(ierr);
 
+        strcpy(ofile,params->ofile_n);
+        strcat(ofile,"_evecr");
+        ierr = PetscViewerASCIIOpen(PETSC_COMM_WORLD,ofile,&viewer);CHKERRV(ierr);
+
 	for(PetscInt i=0;i<params->nf;i++){
 	lower=std::pow(2.0*params->m[i]-params->m[i]*params->alpha*params->alpha,2.0);
 	upper=4.0*params->m[i]*params->m[i];
@@ -65,7 +69,6 @@ void eigensolver(PetscErrorCode ierr, params *params, Mat &H, int argc, char **a
   	ierr = PetscPrintf(PETSC_COMM_WORLD," Number of iterations of the method: %D\n",its);CHKERRV(ierr);
 
  
-   	//Optional: Get some information from the solver and display it
   	ierr = EPSGetType(eps,&type);CHKERRV(ierr);
   	ierr = PetscPrintf(PETSC_COMM_WORLD," Solution method: %s\n\n",type);CHKERRV(ierr);
   	ierr = EPSGetDimensions(eps,&nev,NULL,NULL);CHKERRV(ierr);
@@ -75,11 +78,7 @@ void eigensolver(PetscErrorCode ierr, params *params, Mat &H, int argc, char **a
 
 	ierr = EPSGetConverged(eps,&nconv);CHKERRV(ierr);
   	ierr = PetscPrintf(PETSC_COMM_WORLD," Number of converged eigenpairs: %D\n\n",nconv);CHKERRV(ierr);
-        
-	strcpy(ofile,params->ofile_n);
-      	strcat(ofile,"_evecr");
 
-        ierr = PetscViewerASCIIOpen(PETSC_COMM_WORLD,ofile,&viewer);CHKERRV(ierr);
 
 	if (nconv>0) 
 	{
