@@ -28,6 +28,7 @@ void read_input(PetscErrorCode ierr, char **argv, params *params)
         ifile >> params->flag_anni >> null;
         ifile >> params->flag_mix >> null;
         ifile >> params->flag_asy >> null;
+        ifile >> params->flag_mumps >> null;
         for(int i=0; i<params->nf; i++)
         {
 		ifile >> null;

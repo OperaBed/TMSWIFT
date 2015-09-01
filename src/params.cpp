@@ -9,6 +9,7 @@ struct params{
 	PetscInt flag_nm_dis;
 	PetscInt flag_nt_dis;
 	PetscInt flag_anni,flag_mix,flag_asy;
+	PetscInt flag_mumps;
 
 	std::string sflag_nm_dis;
 	std::string sflag_nt_dis;

@@ -44,7 +44,16 @@ void eigensolver(PetscErrorCode ierr, params *params, Mat &H, int argc, char **a
   	ierr = KSPSetType(ksp,KSPPREONLY);CHKERRV(ierr);
   	ierr = KSPGetPC(ksp,&pc);CHKERRV(ierr);
   	ierr = PCSetType(pc,PCCHOLESKY);CHKERRV(ierr);
-	ierr = EPSKrylovSchurSetPartitions(eps,size);CHKERRV(ierr);
+	
+	if(params->flag_mumps!=0)
+	{
+		ierr = EPSKrylovSchurSetPartitions(eps,size);CHKERRV(ierr);
+	}else{
+        	ierr = EPSKrylovSchurSetPartitions(eps,size/8);CHKERRV(ierr);
+        	ierr = EPSKrylovSchurSetDetectZeros(eps,PETSC_TRUE);CHKERRV(ierr);  /* enforce zero detection */
+        	ierr = PCFactorSetMatSolverPackage(pc,MATSOLVERMUMPS);CHKERRV(ierr);
+        	ierr = PetscOptionsInsertString("-mat_mumps_icntl_13 1 -mat_mumps_icntl_24 1 -mat_mumps_cntl_3 1e-12");CHKERRV(ierr);
+	}
 
         strcpy(ofile,params->ofile_n);
         strcat(ofile,"_evecr");
@@ -52,7 +61,9 @@ void eigensolver(PetscErrorCode ierr, params *params, Mat &H, int argc, char **a
 
 	for(PetscInt i=0;i<params->nf;i++){
 	lower=std::pow(2.0*params->m[i]-params->m[i]*params->alpha*params->alpha,2.0);
-	upper=4.0*params->m[i]*params->m[i];
+//	upper=4.0*params->m[i]*params->m[i];
+	upper=std::pow(2.0*params->m[i]-params->m[i]*params->alpha*params->alpha/2.0/36.0,2.0);
+	
 	ierr = EPSSetInterval(eps,lower,upper);
 	ierr = EPSSetWhichEigenpairs(eps,EPS_ALL);
     	//Set solver parameters at runtime
@@ -77,7 +88,8 @@ void eigensolver(PetscErrorCode ierr, params *params, Mat &H, int argc, char **a
   	ierr = PetscPrintf(PETSC_COMM_WORLD," Stopping condition: tol=%.4g, maxit=%D\n",tol,maxit);CHKERRV(ierr);
 
 	ierr = EPSGetConverged(eps,&nconv);CHKERRV(ierr);
-  	ierr = PetscPrintf(PETSC_COMM_WORLD," Number of converged eigenpairs: %D\n\n",nconv);CHKERRV(ierr);
+  	ierr = PetscPrintf(PETSC_COMM_WORLD," Number of converged eigenpairs: %D\n",nconv);CHKERRV(ierr);
+        ierr = PetscPrintf(PETSC_COMM_WORLD," Range of eigenpairs: %f to %f \n\n",lower,upper);CHKERRV(ierr);
 
 
 	if (nconv>0) 
