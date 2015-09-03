@@ -2,8 +2,8 @@ OUT/truemuon	#outputfile
 3	#number_of_flavors
 0	#J_z
 0.3	#alpha
-1	#N_mu_dis
-1	#N_theta_dis
+2	#N_mu_dis
+2	#N_theta_dis
 0	#Flag_Annihilation
 0	#Flag_Mix_Flavors
 0	#Flag_Asy_G2
