@@ -43,7 +43,8 @@ void discretize(PetscErrorCode ierr, params *params)
                         {
                                 index=j+index_nf;
                                 v_w = weight[j];
-                                v_n = abscis[j];
+                                abscis[j]=(1.0-low_limit)/2.0*abscis[j]+(1.0+low_limit)/2.0;
+                                v_n = (1/abscis[j]-1)*params->p_bohr[0];
                                 ierr  = VecSetValues(params->wmu,1,&index,&v_w,INSERT_VALUES);CHKERRV(ierr);
                                 ierr  = VecSetValues(params->mu,1,&index,&v_n,INSERT_VALUES);CHKERRV(ierr);
                         }
@@ -55,7 +56,8 @@ void discretize(PetscErrorCode ierr, params *params)
                         {
                                 index=j+index_nf;
                                 v_w = weight[j]*std::sqrt(1.0-abscis[j]*abscis[j]);
-                                v_n = abscis[j];
+                                abscis[j]=(1.0-low_limit)/2.0*abscis[j]+(1.0+low_limit)/2.0;
+                                v_n = (1/abscis[j]-1)*params->p_bohr[0];
                                 ierr  = VecSetValues(params->wmu,1,&index,&v_w,INSERT_VALUES);CHKERRV(ierr);
                                 ierr  = VecSetValues(params->mu,1,&index,&v_n,INSERT_VALUES);CHKERRV(ierr);
                         }
@@ -67,7 +69,8 @@ void discretize(PetscErrorCode ierr, params *params)
                         {
                                 index=j+index_nf;
                                 v_w = weight[j]*std::exp(abscis[j]);
-                                v_n = abscis[j];
+                                abscis[j]=(1.0-low_limit)/2.0*abscis[j]+(1.0+low_limit)/2.0;
+                                v_n = (1/abscis[j]-1)*params->p_bohr[0];
                                 ierr  = VecSetValues(params->wmu,1,&index,&v_w,INSERT_VALUES);CHKERRV(ierr);
                                 ierr  = VecSetValues(params->mu,1,&index,&v_n,INSERT_VALUES);CHKERRV(ierr);
                         }
