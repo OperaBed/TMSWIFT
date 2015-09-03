@@ -121,7 +121,7 @@ int main(int argc, char *argv[])
 	if(p.Jz==0){s=2;}else{s=4;}
 	gfile.open("plot_wave",std::ofstream::trunc);
 
-	gfile << "set term postscript enhanced color dashed font \"Times-Roman\" size "<< 7.5*p.nf << "," << 10*s << "\nset output ";
+	gfile << "set term postscript eps enhanced color dashed font \"Times-Roman\" size "<< 3.75*s << "," << 10.0/3.0*p.nf  << "\nset output ";
 	gfile << "'wave_"<< nev  << ".eps'\nset hidden3d\nset border 1023-128\nset ztics\nset grid z\nset ticslevel 0\nset xlabel 'x'\nset ylabel 'k_{/Symbol \\136}'\nset format z \"%.1tx10^{%T}\"\nunset key\n";
 	gfile << "set xrange [0:1]\nset multiplot layout " << p.nf << "," << s << std::endl;
 
