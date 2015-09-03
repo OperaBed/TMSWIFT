@@ -9,8 +9,6 @@ void ct_discrete(PetscErrorCode ierr,params *params)
 	PetscReal *_wmu;
 	PetscReal *_wth;
 	PetscReal p_b3;
-	PetscInt rank;
-
 	h_params hp;	
 	int_params iparams;
 	int_params jparams;
@@ -27,10 +25,8 @@ void ct_discrete(PetscErrorCode ierr,params *params)
         hp.Jz=params->Jz;
 
         ierr = PetscPrintf(PETSC_COMM_WORLD,"---Beginning Coulomb Discrete---\n");CHKERRV(ierr);
+	print_progress_header(ierr);
 
-
-	MPI_Comm_rank(PETSC_COMM_WORLD,&rank);	
-        
 	p_b3=params->p_bohr[0]*params->p_bohr[0]*params->p_bohr[0]*8.0;//Should this be /8 or times 8?
 
         ierr = VecScatterCreateToAll(params->mu,&ctm,&MU_SEQ);CHKERRV(ierr);
@@ -54,11 +50,8 @@ void ct_discrete(PetscErrorCode ierr,params *params)
         ierr = VecGetArray(WTH_SEQ,&_wth);CHKERRV(ierr);
 
         ierr = VecGetOwnershipRange(params->CT,&start,&end);CHKERRV(ierr);
-        for (PetscInt i=start; i<end; i++)
+	for (PetscInt i=start; i<end; i++)
         {
-                if((i-start)%((end-start)/10)==0){ierr = PetscPrintf(PETSC_COMM_SELF,"-----Cd: r%d -> %d\\%d\n",rank,(i-start),(end-start));CHKERRV(ierr);}
-
-
 	        result = 0.0;
 	        spinfunction=0.0;
 
@@ -80,7 +73,6 @@ void ct_discrete(PetscErrorCode ierr,params *params)
             		{	
 				hp.th1=_th[params->nt_tot[iparams.index_f]+k];
 				hp.wth1=_wth[params->nt_tot[iparams.index_f]+k];
-//				ierr = PetscPrintf(PETSC_COMM_SELF,"r%d %f %f %f %f \n",rank,mu1,th1,wmu,wth);CHKERRV(ierr);
                 		hp.x1 = (1.0 + hp.mu1*hp.th1/sqrt(hp.m1*hp.m1 + hp.mu1*hp.mu1))/2.0;	
                 		hp.k1 = hp.mu1*sqrt(1.0-hp.th1*hp.th1);
 				hp.flag_perm=0;
@@ -118,6 +110,7 @@ void ct_discrete(PetscErrorCode ierr,params *params)
         	}
 		
 	        ierr  = VecSetValues(params->CT,1,&i,&result,ADD_VALUES);CHKERRV(ierr);
+                if((i-start)%((end-start)/4)==0){ierr = PetscPrintf(PETSC_COMM_SELF,"|");CHKERRV(ierr);}
 	}
 
         ierr = VecAssemblyBegin(params->CT);CHKERRV(ierr);
@@ -139,6 +132,6 @@ void ct_discrete(PetscErrorCode ierr,params *params)
         ierr = VecScatterDestroy(&ctwt);CHKERRV(ierr);
         ierr = VecDestroy(&WTH_SEQ);CHKERRV(ierr);
 
-        ierr = PetscPrintf(PETSC_COMM_WORLD,"---Finishing Coulomb Discrete---\n");CHKERRV(ierr);
+        ierr = PetscPrintf(PETSC_COMM_WORLD,"\n---Finishing Coulomb Discrete---\n");CHKERRV(ierr);
 }
 

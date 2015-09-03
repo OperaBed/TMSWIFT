@@ -8,7 +8,6 @@ void hamiltonian(PetscErrorCode ierr, params *params, Mat &H)
 	PetscReal h_elem;
         PetscReal *_mu;
         PetscReal *_th;
-	PetscInt rank;
         Vec MU_SEQ;
         Vec TH_SEQ;
         PetscReal *_wmu;
@@ -22,8 +21,7 @@ void hamiltonian(PetscErrorCode ierr, params *params, Mat &H)
 	PetscViewer view_H;
 
 	ierr = PetscPrintf(PETSC_COMM_WORLD,"---Beginning Hamiltonian Construction---\n");CHKERRV(ierr);
-	
-        MPI_Comm_rank(PETSC_COMM_WORLD,&rank);
+	print_progress_header(ierr);	
 
 	hparams.flag_anni=params->flag_anni;
 	hparams.flag_mix=params->flag_mix;
@@ -59,7 +57,6 @@ void hamiltonian(PetscErrorCode ierr, params *params, Mat &H)
 
   	for (PetscInt i=start;i<end;i++)
 	{
-                if((i-start)%((end-start)/10)==0){ierr = PetscPrintf(PETSC_COMM_SELF,"------H: r%d -> %d\\%d\n",rank,(i-start),(end-start));CHKERRV(ierr);}
 	
 		get_index(i,&iparams,params);
 		m1s=params->m[iparams.index_f]*params->m[iparams.index_f];
@@ -131,6 +128,7 @@ void hamiltonian(PetscErrorCode ierr, params *params, Mat &H)
 				ierr = MatSetValue(H,i,j,h_elem,ADD_VALUES);CHKERRV(ierr);
 			}
 		}
+                if((i-start)%((end-start)/4)==0){ierr = PetscPrintf(PETSC_COMM_SELF,"|");CHKERRV(ierr);}
   	}
 
 	ierr = MatAssemblyBegin(H,MAT_FINAL_ASSEMBLY);CHKERRV(ierr);
@@ -158,5 +156,5 @@ void hamiltonian(PetscErrorCode ierr, params *params, Mat &H)
 	PetscViewerBinaryOpen(PETSC_COMM_WORLD,params->hfile.c_str(),FILE_MODE_WRITE,&view_H);
 	MatView(H,view_H);
 	PetscViewerDestroy(&view_H);
-	ierr = PetscPrintf(PETSC_COMM_WORLD,"---Finishing Hamiltonian Construction---\n");CHKERRV(ierr);
+	ierr = PetscPrintf(PETSC_COMM_WORLD,"\n---Finishing Hamiltonian Construction---\n");CHKERRV(ierr);
 }

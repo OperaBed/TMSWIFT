@@ -51,6 +51,6 @@ void eigensolver(PetscErrorCode ierr, params *params, Mat &H, int argc, char **a
 
 //Found in output.cpp
 void write_output(PetscErrorCode ierr, params *params);
-
+void print_progress_header(PetscErrorCode ierr);
 //Found in cleanup.cpp
 void cleanup(PetscErrorCode ierr, params *params);

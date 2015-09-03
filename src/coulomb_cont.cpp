@@ -85,6 +85,8 @@ void coulomb_trick(PetscErrorCode ierr, params *params)
 
 	int_params int_params;
 
+	ierr = PetscPrintf(PETSC_COMM_WORLD,"---Beginning Coulomb Trick---\n");CHKERRV(ierr);
+	print_progress_header(ierr);
 	int_params.epsabs=1e-4;
 	int_params.epsrel=1e-8;
 	int_params.N_work=4000;
@@ -97,10 +99,8 @@ void coulomb_trick(PetscErrorCode ierr, params *params)
 
         gsl_function F;
         F.function = &ct_integrand;
-        F.params=&int_params;
+        F.params=&int_params;	
 
-	ierr = PetscPrintf(PETSC_COMM_WORLD,"---Beginning Coulomb Trick---\n");CHKERRV(ierr);
-       
 	ierr = VecScatterCreateToAll(params->mu,&ctm,&MU_SEQ);CHKERRV(ierr);
   	ierr = VecScatterBegin(ctm,params->mu,MU_SEQ,INSERT_VALUES,SCATTER_FORWARD);CHKERRV(ierr);
   	ierr = VecScatterEnd(ctm,params->mu,MU_SEQ,INSERT_VALUES,SCATTER_FORWARD);CHKERRV(ierr);
@@ -114,7 +114,7 @@ void coulomb_trick(PetscErrorCode ierr, params *params)
 	ierr = VecGetOwnershipRange(params->CT,&start,&end);CHKERRV(ierr);
         for (PetscInt i=start; i<end; i++)
 	{
-		if((i-start)%((end-start)/10)==0){ierr = PetscPrintf(PETSC_COMM_SELF,"----Cc: r%d -> %d\\%d\n",rank,(i-start),(end-start));CHKERRV(ierr);}
+		//if((i-start)%((end-start)/10)==0){ierr = PetscPrintf(PETSC_COMM_SELF,"----Cc: r%d -> %d\\%d\n",rank,(i-start),(end-start));CHKERRV(ierr);}
 
 		get_index(i,&int_params,params);
 //		ierr = PetscPrintf(PETSC_COMM_SELF,"CT_Index: %d %d %d %d %d\n",int_params.index_all,int_params.index_s,int_params.index_f,int_params.index_m,int_params.index_t);CHKERRV(ierr);
@@ -153,6 +153,7 @@ void coulomb_trick(PetscErrorCode ierr, params *params)
 	      			ierr  = VecSetValues(params->CT,1,&ishift,&coul_result,ADD_VALUES);CHKERRV(ierr);
 			}
 		}
+		if((i-start)%((end-start)/4)==0){ierr = PetscPrintf(PETSC_COMM_SELF,"|");CHKERRV(ierr);}
 	}
 	
 	ierr = VecRestoreArray(MU_SEQ,&_mu);CHKERRV(ierr);
@@ -166,5 +167,5 @@ void coulomb_trick(PetscErrorCode ierr, params *params)
 	ierr = VecAssemblyBegin(params->CT);CHKERRV(ierr);
 	ierr = VecAssemblyEnd(params->CT);CHKERRV(ierr);
     	
-	ierr = PetscPrintf(PETSC_COMM_WORLD,"---Finishing Coulomb Trick---\n");CHKERRV(ierr);
+	ierr = PetscPrintf(PETSC_COMM_WORLD,"\n---Finishing Coulomb Trick---\n");CHKERRV(ierr);
 }

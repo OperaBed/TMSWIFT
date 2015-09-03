@@ -132,4 +132,10 @@ void write_output(PetscErrorCode ierr, params *params)
 
 }
 
-
+void print_progress_header(PetscErrorCode ierr)
+{
+	PetscInt size;
+	MPI_Comm_size(PETSC_COMM_WORLD,&size);
+	for(PetscInt i=0;i<size;i++){ierr = PetscPrintf(PETSC_COMM_WORLD,"=====");CHKERRV(ierr);}
+	ierr = PetscPrintf(PETSC_COMM_WORLD,"\n");CHKERRV(ierr);
+}
