@@ -3,6 +3,9 @@ void set_sflags(params *params);
 void read_input(PetscErrorCode ierr, char **argv, params *params);
 void print_input(PetscErrorCode ierr, params *params);
 
+//Found in string.cpp
+std::string toStr(unsigned long long num);
+
 //Found in discretize.cpp
 void discretize(PetscErrorCode ierr, params *params);
 

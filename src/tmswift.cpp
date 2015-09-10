@@ -27,6 +27,7 @@
 #include "sandia_rules.cpp"
 #include "prototypes.hpp"
 #include "input.cpp"
+#include "string.cpp"
 #include "discretize.cpp"
 #include "coulomb_cont.cpp"
 #include "coulomb_discrete.cpp"
