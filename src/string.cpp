@@ -1,5 +1,5 @@
 std::string toStr(unsigned long long num) {
-   std::string charset = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+-.,?<>;:_=!@#$^&*()~`";
+   std::string charset = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+-.,?<>;:=!@#$^&*()~`";
    int base = charset.length();
    std::string str = num ? "" : "0";
 
