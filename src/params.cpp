@@ -1,6 +1,6 @@
 struct params{
 
-	char ofile_n[100];
+	std::string ofile_n;
 
         PetscInt nf;
 	PetscInt Jz;

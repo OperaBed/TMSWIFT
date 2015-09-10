@@ -27,7 +27,7 @@ void eigensolver(PetscErrorCode ierr, params *params, Mat &H, int argc, char **a
   	ierr = PetscPrintf(PETSC_COMM_WORLD,"---Beginning Eigenvalue Solver---\n");CHKERRV(ierr);
  	ierr = EPSCreate(PETSC_COMM_WORLD,&eps);CHKERRV(ierr);
 
-        eig_file_n.append(params->ofile_n);
+        eig_file_n.append(params->ofile_n.c_str());
         eig_file_n.append("_eval");
         eig_file.open(eig_file_n.c_str(),std::ofstream::trunc);
 
@@ -55,7 +55,7 @@ void eigensolver(PetscErrorCode ierr, params *params, Mat &H, int argc, char **a
         	ierr = PetscOptionsInsertString("-mat_mumps_icntl_13 1 -mat_mumps_icntl_24 1 -mat_mumps_cntl_3 1e-12");CHKERRV(ierr);
 	}
 
-        strcpy(ofile,params->ofile_n);
+        strcpy(ofile,params->ofile_n.c_str());
         strcat(ofile,"_evecr");
         ierr = PetscViewerASCIIOpen(PETSC_COMM_WORLD,ofile,&viewer);CHKERRV(ierr);
 

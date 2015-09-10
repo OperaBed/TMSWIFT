@@ -4,7 +4,8 @@ void read_input(PetscErrorCode ierr, char **argv, params *params);
 void print_input(PetscErrorCode ierr, params *params);
 
 //Found in string.cpp
-std::string toStr(unsigned long long num);
+std::string toStrBase82(unsigned long long num);
+void get_outfile_name(params *p);
 
 //Found in discretize.cpp
 void discretize(PetscErrorCode ierr, params *params);

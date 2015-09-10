@@ -63,13 +63,9 @@ void read_input(PetscErrorCode ierr, char **argv, params *params)
 		datar+=params->nm[i];
 		datat+=params->nt[i];
 	}
+	get_outfile_name(params);
 
 	params->hfile.append(params->ofile_n);
-        for(int i = 0; i<params->nf; i++)
-        { 
-                params->hfile.append(std::to_string(static_cast<long long>(params->nm[i])));
-                params->hfile.append(std::to_string(static_cast<long long>(params->nt[i])));
-        }
         params->hfile.append("_H");
 
 	
@@ -98,7 +94,7 @@ void print_input(PetscErrorCode ierr, params *params)
 {
 
         ierr = PetscPrintf(PETSC_COMM_WORLD,"\n---TMSWIFT Parameters---");CHKERRV(ierr);
-        ierr = PetscPrintf(PETSC_COMM_WORLD,"\n-Output File: %s",params->ofile_n);CHKERRV(ierr);
+        ierr = PetscPrintf(PETSC_COMM_WORLD,"\n-Output File: %s",params->ofile_n.c_str());CHKERRV(ierr);
         ierr = PetscPrintf(PETSC_COMM_WORLD,"\n-Number of Flavors: %d",params->nf);CHKERRV(ierr);
         ierr = PetscPrintf(PETSC_COMM_WORLD,"\n-J_z: %d",params->Jz);CHKERRV(ierr);
         ierr = PetscPrintf(PETSC_COMM_WORLD,"\n-Alpha: %g",params->alpha);CHKERRV(ierr);
@@ -108,6 +104,7 @@ void print_input(PetscErrorCode ierr, params *params)
         ierr = PetscPrintf(PETSC_COMM_WORLD,"\n-Annihilation Flag: %d",params->flag_anni);CHKERRV(ierr);
         ierr = PetscPrintf(PETSC_COMM_WORLD,"\n-Flavor Mixing Flag: %d",params->flag_mix);CHKERRV(ierr);
         ierr = PetscPrintf(PETSC_COMM_WORLD,"\n-Asymptotic G2 Flag: %d",params->flag_asy);CHKERRV(ierr);
+        ierr = PetscPrintf(PETSC_COMM_WORLD,"\n-MUMPS Flag: %d",params->flag_mumps);CHKERRV(ierr);
 
         for( int i=0;i<params->nf;i++)
         {

@@ -105,21 +105,21 @@ void write_output(PetscErrorCode ierr, params *params)
         ierr = VecScatterDestroy(&ctwt);CHKERRV(ierr);
         ierr = VecDestroy(&WTH_SEQ);CHKERRV(ierr);
 
-	strcpy(ofile,params->ofile_n);
+	strcpy(ofile,params->ofile_n.c_str());
 	strcat(ofile,"_x");
 	
 	ierr = PetscViewerASCIIOpen(PETSC_COMM_WORLD,ofile,&viewer);CHKERRV(ierr);
         ierr = VecView(x,viewer);CHKERRV(ierr);
       	ierr = PetscViewerDestroy(&viewer);CHKERRV(ierr);
 
-	strcpy(ofile,params->ofile_n);
+	strcpy(ofile,params->ofile_n.c_str());
         strcat(ofile,"_k");
         
         ierr = PetscViewerASCIIOpen(PETSC_COMM_WORLD,ofile,&viewer);CHKERRV(ierr);
         ierr = VecView(k,viewer);CHKERRV(ierr);
         ierr = PetscViewerDestroy(&viewer);CHKERRV(ierr);
 
-	strcpy(ofile,params->ofile_n);
+	strcpy(ofile,params->ofile_n.c_str());
         strcat(ofile,"_asy");
         
         ierr = PetscViewerASCIIOpen(PETSC_COMM_WORLD,ofile,&viewer);CHKERRV(ierr);
