@@ -19,8 +19,9 @@ analysis: src/analysis.o chkopts
 #analysis:
 #	g++ -o analysis src/analysis.cpp -std=c++0x
 
-plot:
-	g++ -o plot_wavefunctions src/plot_wavefunctions.cpp -std=c++0x
+plot: src/plot_wavefunctions.o chkopts
+	${CPPLINKER} -o plot_wavefunctions src/plot_wavefunctions.o  ${CPPFLAGS} ${SLEPC_EPS_LIB}
+	${RM} src/plot_wavefunctions.o
 
 .PHONY: clean
 clean::

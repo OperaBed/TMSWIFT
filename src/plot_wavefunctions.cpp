@@ -5,15 +5,15 @@
 #include <vector>
 #include <cmath>
 #include <stdlib.h>
-struct params{
+#include <slepceps.h>
 
-        char ofile_n[100];
-
-        int nf;
-        int Jz;
-        int N_tot;
-
-};
+#include "params.cpp"
+#include "set_flags.cpp"
+#include "print_params.cpp"
+#include "string.cpp"
+#include "read_input.cpp"
+#include "read_file.cpp"
+static char help[] = "Plotting code for extracting single wave functions and computing probablilties for the problem of QFT bound states on the light front.\n\n";
 
 double round_to_digits(double value, int digits)
 {
@@ -24,40 +24,6 @@ double round_to_digits(double value, int digits)
     return round(value * factor) / factor;   
 }
 
-void read_input(char **argv, params *params)
-{
-
-        std::ifstream ifile;
-        std::string ifile_n;
-        std::string null;
-
-        ifile_n = argv[1];
-        ifile.open(ifile_n.c_str());
-
-        ifile >> params->ofile_n >> null;
-        ifile >> params->nf >> null;
-        ifile >> params->Jz >> null;
-}
-
-void read_ofile(std::string file_name, std::vector<double> *vec)
-{
-	std::string line;
-	std::fstream infile;
-        infile.open(file_name.c_str());
-        while (std::getline(infile, line))
-        {
-                std::istringstream iss(line);
-                double a;
-                if ((iss >> a)) 
-                {
-			vec->push_back(a);
-		}
-        }
-        infile.close();
-}
-
-
-
 int main(int argc, char *argv[])
 {
 	std::vector<double> min;
@@ -67,12 +33,19 @@ int main(int argc, char *argv[])
 	std::string line;
 	int nev;
 	int s;
+	PetscErrorCode ierr;
+
+        SlepcInitialize(&argc,&argv,(char*)0,help);
 
 	std::ifstream ifile;
 	std::ofstream gfile;
 	params p;
 
+        ierr = PetscPrintf(PETSC_COMM_WORLD,"----------------------------------\n");CHKERRQ(ierr);
         read_input(argv,&p);
+        print_input(ierr,&p);
+        ierr = PetscPrintf(PETSC_COMM_WORLD,"----------------------------------\n");CHKERRQ(ierr);
+
 	nev=std::atoi(argv[2]);
 	min.resize(12*p.nf);
 	max.resize(12*p.nf);
@@ -89,7 +62,7 @@ int main(int argc, char *argv[])
 		for(int m=0;m<4;++m)
 		{	
 			std::stringstream ss;
-			ss << p.ofile_n << "_n" << nev << "_f" << l << "_s" << m;
+			ss << p.ofile_n << "n" << nev << "_f" << l << "_s" << m;
 			ss >> f_name;	
 		
 			std::cout << f_name << std::endl;
@@ -100,7 +73,7 @@ int main(int argc, char *argv[])
                 		double x,k,a,prob;
                 		if ((iss >> x >> k >> a >> prob))
                 		{
-                 			if(x<min[12*l+3*m+0]) min[12*l+3*m+0]=x;	       
+					if(x<min[12*l+3*m+0]) min[12*l+3*m+0]=x;	       
                  			if(k<min[12*l+3*m+1]) min[12*l+3*m+1]=k;	       
                  			if(prob*prob<min[12*l+3*m+2]) min[12*l+3*m+2]=prob*prob;
 
@@ -130,7 +103,7 @@ int main(int argc, char *argv[])
 		int f;
 		std::stringstream ss;
 		if(i<4){f=0;}else if(i<8){f=1;}else if(i<12){f=2;}
-                ss << p.ofile_n << "_n" << nev << "_f" << f  << "_s" << i%4;
+                ss << p.ofile_n << "n" << nev << "_f" << f  << "_s" << i%4;
                 ss >> f_name;
 
 		if(i%4<2)
@@ -146,7 +119,7 @@ int main(int argc, char *argv[])
 			gfile << "set xtics 0.1,.2,.9 offset -2\n";
 			gfile << "set ytics " << round_to_digits(min[1+3*i],2) << "," << round_to_digits(increm[1+3*i],2) << "," << round_to_digits(max[1+3*i],2) <<" offset 2\n";
 			gfile << "set ztics " << round_to_digits(min[2+3*i],2) << "," << round_to_digits(increm[2+3*i],2) << "," << round_to_digits(max[2+3*i],2) <<" offset -1\n";
-			gfile << "splot \'./" << f_name << "\' u 1:2:($4*$4) w lines\n";
+			gfile << "splot \'" << f_name << "\' u 1:2:($4*$4) w lines\n";
 		}
 		if(p.Jz!=0 && i%4>1)
 		{
@@ -167,6 +140,8 @@ int main(int argc, char *argv[])
 	}	
 	gfile.close();	
 	s=std::system("gnuplot plot_wave");
-	s=std::system("rm plot_wave");
+//	s=std::system("rm plot_wave");
+        ierr = SlepcFinalize();
+
 	return 0;
 }

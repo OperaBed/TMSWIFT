@@ -10,49 +10,9 @@
 #include "set_flags.cpp"
 #include "print_params.cpp"
 #include "string.cpp"
-
+#include "read_input.cpp"
+#include "read_file.cpp"
 static char help[] = "Analysis code for extracting single wave functions and computing probablilties for the problem of QFT bound states on the light front.\n\n";
-
-void read_input(char **argv, params *params)
-{
-
-        std::string ifile_n;
-
-        ifile_n = argv[1];
-	params->ofile_n.append(ifile_n.c_str());
-	get_params_from_file(ifile_n,params);
-	set_sflags(params);
-
-        params->N_tot=0;
-
-        for(int i=0;i<params->nf;i++)
-        {
-		params->p_bohr.push_back(params->m[i]*params->alpha/2.0);
-                params->N_tot_f.push_back(params->N_tot);
-                params->N_tot+=params->nm[i]*params->nt[i];
-                params->N_tot_e.push_back(params->nm[i]*params->nt[i]);
-        }
-                params->N_tot_f.push_back(params->N_tot);
-}
-
-void read_ofile(std::string file_name, std::vector<double> *vec)
-{
-	std::string line;
-	std::fstream infile;
-        infile.open(file_name.c_str());
-        while (std::getline(infile, line))
-        {
-                std::istringstream iss(line);
-                double a;
-                if ((iss >> a)) 
-                {
-			vec->push_back(a);
-		}
-        }
-        infile.close();
-}
-
-
 
 int main(int argc, char *argv[])
 {
@@ -118,7 +78,7 @@ int main(int argc, char *argv[])
 			for(int m=0;m<4;++m)
 			{	
 				std::stringstream ss;
-				ss << p.ofile_n << "_n" << i << "_f" << l << "_s" << m;
+				ss << p.ofile_n << "n" << i << "_f" << l << "_s" << m;
 				ss >> f_name[m];	
 			}
 			f0.open(f_name[0].c_str());	
