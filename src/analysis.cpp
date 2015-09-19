@@ -3,62 +3,30 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
-struct params{
+#include <slepceps.h>
 
-        char ofile_n[100];
+#include "params.cpp"
+#include "set_flags.cpp"
+#include "print_params.cpp"
+#include "string.cpp"
 
-        int nf;
-        int Jz;
-        int N_tot;
-
-        std::vector<double> m;
-        std::vector<int> nm;
-        std::vector<int> nt;
-        std::vector<int> N_tot_f;
-        std::vector<int> N_tot_e;
-
-};
+static char help[] = "Analysis code for extracting single wave functions and computing probablilties for the problem of QFT bound states on the light front.\n\n";
 
 void read_input(char **argv, params *params)
 {
 
-        std::ifstream ifile;
         std::string ifile_n;
-        std::string null;
-
-        double datar;
-        int  datai;
 
         ifile_n = argv[1];
-        ifile.open(ifile_n.c_str());
-
-        ifile >> params->ofile_n >> null;
-        ifile >> params->nf >> null;
-        ifile >> params->Jz >> null;
-        ifile >> null >> null;
-        ifile >> null >> null;
-        ifile >> null >> null;
-        ifile >> null >> null;
-        ifile >> null >> null;
-        ifile >> null >> null;
-        for(int i=0; i<params->nf; i++)
-        {
-                ifile >> null;
-
-                ifile >> datar >> null;
-                params->m.push_back(datar);
-                ifile >> datai >> null;
-                params->nm.push_back(datai);
-                ifile >> datai >> null;
-                params->nt.push_back(datai);
-                ifile >> null >> null;
-        }
-        ifile.close();
+	params->ofile_n.append(ifile_n.c_str());
+	get_params_from_file(ifile_n,params);
+	set_sflags(params);
 
         params->N_tot=0;
 
         for(int i=0;i<params->nf;i++)
         {
+		params->p_bohr.push_back(params->m[i]*params->alpha/2.0);
                 params->N_tot_f.push_back(params->N_tot);
                 params->N_tot+=params->nm[i]*params->nt[i];
                 params->N_tot_e.push_back(params->nm[i]*params->nt[i]);
@@ -98,32 +66,36 @@ int main(int argc, char *argv[])
 	int nev;
 	int index;
 	int index_p;
-	
+	PetscErrorCode ierr;
 
 	std::ofstream f0,f1,f2,f3;
 	std::vector<std::string> f_name;
 	std::vector<double> prob;
 	params p;
 
+	SlepcInitialize(&argc,&argv,(char*)0,help);
+        ierr = PetscPrintf(PETSC_COMM_WORLD,"----------------------------------\n");CHKERRQ(ierr);
+
         read_input(argv,&p);
-	
+	print_input(ierr,&p);	
+        ierr = PetscPrintf(PETSC_COMM_WORLD,"----------------------------------\n");CHKERRQ(ierr);
 	f_name.resize(4);
 	prob.resize(p.nf);
 
 	line=p.ofile_n;
-	line.append("_x");
+	line.append("x");
 	read_ofile(line,&x);
       
   	line=p.ofile_n;
-        line.append("_k");
+        line.append("k");
 	read_ofile(line,&k);
 
         line=p.ofile_n;
-        line.append("_asy");
+        line.append("asy");
 	read_ofile(line,&asy);
 
         line=p.ofile_n;
-        line.append("_evecr");
+        line.append("evecr");
 	read_ofile(line,&evec_r);
 
 	nev=evec_r.size()/x.size();
@@ -178,5 +150,8 @@ int main(int argc, char *argv[])
 		}
 		std::cout << std::endl;
 	}
+
+	        ierr = SlepcFinalize();
+
 	return 0;
 }

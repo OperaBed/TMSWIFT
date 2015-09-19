@@ -19,6 +19,7 @@ struct params{
         std::vector<PetscInt> nm;
         std::vector<PetscInt> nt;
         std::vector<PetscInt> N_tot_f;
+        std::vector<PetscInt> N_tot_e;
         std::vector<PetscInt> nm_tot;
         std::vector<PetscInt> nt_tot;
         std::vector<PetscReal> lambda;

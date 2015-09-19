@@ -27,6 +27,8 @@
 #include "sandia_rules.cpp"
 #include "prototypes.hpp"
 #include "input.cpp"
+#include "set_flags.cpp"
+#include "print_params.cpp"
 #include "string.cpp"
 #include "discretize.cpp"
 #include "coulomb_cont.cpp"

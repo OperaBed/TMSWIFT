@@ -1,11 +1,21 @@
-//Found in input.cpp
+//Found in set_flags.cpp
 void set_sflags(params *params);
+
+//Found in input.cpp
 void read_input(PetscErrorCode ierr, char **argv, params *params);
+
+//Found in print_params.cpp
 void print_input(PetscErrorCode ierr, params *params);
 
 //Found in string.cpp
+unsigned long long uintpow(unsigned value, unsigned exp);
 std::string toStrBase82(unsigned long long num);
+unsigned long long frmStrBase82(std::string);
 void get_outfile_name(params *p);
+void get_params_gen(unsigned long long num);
+void get_params_flavor(unsigned long long num);
+void get_params_from_file(std::string str, params *p);
+
 
 //Found in discretize.cpp
 void discretize(PetscErrorCode ierr, params *params);

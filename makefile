@@ -12,8 +12,12 @@ tmswift: src/tmswift.o chkopts
 	${CPPLINKER} -o tmswift src/tmswift.o  ${CPPFLAGS} ${SLEPC_EPS_LIB}
 	${RM} src/tmswift.o
 
-analysis:
-	g++ -o analysis src/analysis.cpp -std=c++0x
+analysis: src/analysis.o chkopts
+	${CPPLINKER} -o analysis src/analysis.o  ${CPPFLAGS} ${SLEPC_EPS_LIB}
+	${RM} src/analysis.o
+
+#analysis:
+#	g++ -o analysis src/analysis.cpp -std=c++0x
 
 plot:
 	g++ -o plot_wavefunctions src/plot_wavefunctions.cpp -std=c++0x
