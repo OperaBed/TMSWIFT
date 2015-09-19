@@ -46,7 +46,7 @@ void get_outfile_name(params *p)
 
 	std::string string_temp;
 
-	string_temp.append("_");   
+//	string_temp.append("_");   
 	num=p->nf*10000000000+p->Jz*1000000000+std::round(p->alpha*100)*1000000+p->flag_nm_dis*100000+p->flag_nt_dis*10000+p->flag_anni*1000+p->flag_mix*100+p->flag_asy*10+p->flag_mumps;
                 string_temp.append(toStrBase82(num));
 
