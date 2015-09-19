@@ -2,6 +2,7 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include <iomanip>
 #include <vector>
 #include <slepceps.h>
 
@@ -59,6 +60,7 @@ int main(int argc, char *argv[])
 	std::vector<double> k;
 	std::vector<double> asy;
 	std::vector<double> evec_r;
+	std::vector<double> eval;
 	std::vector<double> nm;
 	std::vector<double> nt;
 	std::vector<double> n_tot;
@@ -98,10 +100,12 @@ int main(int argc, char *argv[])
         line.append("evecr");
 	read_ofile(line,&evec_r);
 
+	line=p.ofile_n;
+	line.append("eval");
+	read_ofile(line,&eval);
+
 	nev=evec_r.size()/x.size();
-	std::cout << x.size() << " " << k.size() << " " << asy.size() << " " << evec_r.size() << std::endl;
-	std::cout << p.N_tot_f[0] << " " << p.N_tot_f[1] << " " << p.N_tot_f[2] << std::endl;
-	std::cout << p.N_tot_e[0] << " " << p.N_tot_e[1]  << std::endl;
+
 	for(int i=0;i<nev;++i)
 	{
 		for(int o=0;o<p.nf;++o)
@@ -143,10 +147,10 @@ int main(int argc, char *argv[])
 			f2.close();
 			f3.close();
 		}
-		std::cout << i << ": ";
+		std::cout << i << ": " << eval[i] << " -- ";
 		for(int o=0;o<p.nf;++o)
 		{
-			std::cout << prob[o] << "   ";
+			std::cout << std::setw(12) << prob[o] << "   ";
 		}
 		std::cout << std::endl;
 	}
