@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
 				f1 << x[1+index_p] << " " << k[1+index_p] << " " << asy[1+index_p] << " " << evec_r[1+index] << std::endl;
 				f2 << x[2+index_p] << " " << k[2+index_p] << " " << asy[2+index_p] << " " << evec_r[2+index] << std::endl;
 				f3 << x[3+index_p] << " " << k[3+index_p] << " " << asy[3+index_p] << " " << evec_r[3+index] << std::endl;
-				if((j+1)%p.nm[l]==0)
+				if((j+1)%p.nt[l]==0)
 				{
 					f0 << std::endl;
 					f1 << std::endl;

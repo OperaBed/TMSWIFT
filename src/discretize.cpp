@@ -77,6 +77,19 @@ void discretize(PetscErrorCode ierr, params *params)
 
                         break;
 
+			case 5:
+			for (PetscInt j=0; j<params->nm[i]; j++)
+                        {
+                                index=j+index_nf;
+                                v_w = 1.0;
+                                v_n = 1.0*j*params->lambda[i]/(1.0*params->nm[i]);
+                                ierr  = VecSetValues(params->wmu,1,&index,&v_w,INSERT_VALUES);CHKERRV(ierr);
+                                ierr  = VecSetValues(params->mu,1,&index,&v_n,INSERT_VALUES);CHKERRV(ierr);
+                        }
+
+                        break;
+
+
 			
 
 			default:
@@ -92,8 +105,11 @@ void discretize(PetscErrorCode ierr, params *params)
 			}
 			break;
 
+
 		
 		}
+		
+
 		
 		index_nf+=params->nm[i];
 	}

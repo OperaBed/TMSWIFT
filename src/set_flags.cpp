@@ -19,6 +19,10 @@ void set_sflags(params *params)
 		params->sflag_nm_dis="chebyshev1";
 		break;
 
+		case 5:
+		params->sflag_nm_dis="uniform";
+		break; 
+		
 		default:
 		params->sflag_nm_dis="legendre";
 		break;
