@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
 	}else
 	{
         	discretize(ierr,&params);
-//  	    	ierr = VecView(params.mu,PETSC_VIEWER_STDOUT_WORLD);CHKERRQ(ierr);
+  	    	ierr = VecView(params.mu,PETSC_VIEWER_STDOUT_WORLD);CHKERRQ(ierr);
 //        	ierr = VecView(params.theta,PETSC_VIEWER_STDOUT_WORLD);CHKERRQ(ierr);
 
 		write_output(ierr,&params);	

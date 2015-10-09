@@ -23,6 +23,10 @@ void set_sflags(params *params)
 		params->sflag_nm_dis="uniform";
 		break; 
 		
+		case 6:
+		params->sflag_nm_dis="split_clenshaw";
+		break;
+		
 		default:
 		params->sflag_nm_dis="legendre";
 		break;
