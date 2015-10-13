@@ -24,7 +24,7 @@ void set_sflags(params *params)
 		break; 
 		
 		case 6:
-		params->sflag_nm_dis="split_clenshaw";
+		params->sflag_nm_dis="split_legendre";
 		break;
 		
 		default:
