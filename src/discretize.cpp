@@ -72,8 +72,7 @@ void discretize(PetscErrorCode ierr, params *params)
                         {
                                 index=j+index_nf;
                                 v_w = weight[j]*std::exp(abscis[j]);
-                                abscis[j]=(upper_limit-low_limit)/2.0*abscis[j]+(upper_limit+low_limit)/2.0;
-                                v_n = (1/abscis[j]-1)*params->p_bohr[0];
+                                v_n = abscis[j];
                                 ierr  = VecSetValues(params->wmu,1,&index,&v_w,INSERT_VALUES);CHKERRV(ierr);
                                 ierr  = VecSetValues(params->mu,1,&index,&v_n,INSERT_VALUES);CHKERRV(ierr);
                         }
@@ -91,34 +90,6 @@ void discretize(PetscErrorCode ierr, params *params)
                         }
 
                         break;
-
-/*			case 6:
-			PetscInt n1,n2;
-			PetscReal mid_limit;
-			mid_limit=1.0/(1.0+4.0*params->m[0]*params->m[0]);
-			if((params->nm[i])%2==0)
-			{
-				n1=std::floor(0.5*params->nm[i]);
-				n2=std::floor(0.5*params->nm[i]);
-			} else
-			{
-				n1=std::floor(0.5*params->nm[i])+1;
-                                n2=std::floor(0.5*params->nm[i]);
-			}
-                        webbur::legendre_compute(n1,&abscis[0],&weight[0]);
-                        webbur::legendre_compute(n2,&abscis[n1],&weight[n1]);
-                        for (PetscInt j=0; j<params->nm[i]; j++)
-                        {
-                                index=j+index_nf;
-                                v_w = weight[j];
-                        	if(j>=n1){abscis[j]=(upper_limit-1.01*mid_limit)/2.0*abscis[j]+(upper_limit+1.01*mid_limit)/2.0;}
-				else{abscis[j]=(mid_limit-low_limit)/2.0*abscis[j]+(mid_limit+low_limit)/2.0;}
-                                v_n = (1/abscis[j]-1)*params->p_bohr[0];
-                                ierr  = VecSetValues(params->wmu,1,&index,&v_w,INSERT_VALUES);CHKERRV(ierr);
-                                ierr  = VecSetValues(params->mu,1,&index,&v_n,INSERT_VALUES);CHKERRV(ierr);
-                        }
-			break;
-*/			
 
 			default:
 			webbur::legendre_compute(params->nm[i],&abscis[0],&weight[0]);
