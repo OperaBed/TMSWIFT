@@ -116,7 +116,7 @@ void eigensolver(PetscErrorCode ierr, params *params, Mat &H, int argc, char **a
       			if (im!=0.0)
 			{
         		
-				ierr = PetscPrintf(PETSC_COMM_WORLD," %9f%+9f j %12g\n",re,im,error);CHKERRV(ierr);
+				ierr = PetscPrintf(PETSC_COMM_WORLD," %12f%+12f j %12g\n",re,im,error);CHKERRV(ierr);
 				if(rank==0) eig_file << re << " " << im << " " << error << std::endl;
 			} else 
 			{
