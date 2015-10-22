@@ -49,7 +49,7 @@ void eigensolver(PetscErrorCode ierr, params *params, Mat &H, int argc, char **a
 	{
 		ierr = EPSKrylovSchurSetPartitions(eps,size);CHKERRV(ierr);
 	}else{
-        	ierr = EPSKrylovSchurSetPartitions(eps,size/8);CHKERRV(ierr);
+        	ierr = EPSKrylovSchurSetPartitions(eps,size/64);CHKERRV(ierr);
         	ierr = EPSKrylovSchurSetDetectZeros(eps,PETSC_TRUE);CHKERRV(ierr);  /* enforce zero detection */
         	ierr = PCFactorSetMatSolverPackage(pc,MATSOLVERMUMPS);CHKERRV(ierr);
         	ierr = PetscOptionsInsertString("-mat_mumps_icntl_13 1 -mat_mumps_icntl_24 1 -mat_mumps_cntl_3 1e-12");CHKERRV(ierr);
