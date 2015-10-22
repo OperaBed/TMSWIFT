@@ -33,6 +33,8 @@ int main(int argc, char *argv[])
 	std::ofstream f0,f1,f2,f3;
 	std::vector<std::string> f_name;
 	std::vector<double> prob;
+	double dc_scalar;
+	double dc_pseudo;
 	params p;
 
 	SlepcInitialize(&argc,&argv,(char*)0,help);
@@ -68,6 +70,9 @@ int main(int argc, char *argv[])
 
 	for(int i=0;i<nev;++i)
 	{
+		dc_scalar=0;
+		dc_pseudo=0;
+
 		for(int o=0;o<p.nf;++o)
 		{
 			prob[o]=0;
@@ -89,7 +94,11 @@ int main(int argc, char *argv[])
 			{
 				index=4*j+i*x.size()+4*p.N_tot_f[l];
 				index_p=4*j+4*p.N_tot_f[l];
-				for(int o=0; o<4; o++){prob[l]+=evec_r[o+index]*evec_r[o+index];}
+				for(int o=0; o<4; o++){
+					prob[l]+=evec_r[o+index]*evec_r[o+index];
+					dc_scalar+=(evec_r[1+index]-evec_r[2+index])*k[0+index_p]/std::sqrt(x[0+index_p]*(1.0-x[0+index_p]));
+					dc_pseudo+=(evec_r[1+index]+evec_r[2+index])*k[0+index_p]/std::sqrt(x[0+index_p]*(1.0-x[0+index_p]));
+				}
 				f0 << x[0+index_p] << " " << k[0+index_p] << " " << asy[0+index_p] << " " << evec_r[0+index] << std::endl;
 				f1 << x[1+index_p] << " " << k[1+index_p] << " " << asy[1+index_p] << " " << evec_r[1+index] << std::endl;
 				f2 << x[2+index_p] << " " << k[2+index_p] << " " << asy[2+index_p] << " " << evec_r[2+index] << std::endl;
@@ -107,11 +116,12 @@ int main(int argc, char *argv[])
 			f2.close();
 			f3.close();
 		}
-		std::cout << i << ": " << eval[i] << " -- ";
+		std::cout << std::setw(5) << i << ": " << std::setw(10) << eval[i] << " -- ";
 		for(int o=0;o<p.nf;++o)
 		{
 			std::cout << std::setw(12) << prob[o] << "   ";
 		}
+		std::cout << " f_S: " << std::setw(12) << dc_scalar << " f_P: " << dc_pseudo;
 		std::cout << std::endl;
 	}
 
