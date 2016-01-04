@@ -7,21 +7,21 @@ OUT/truem	#outputfile
 0	#Flag_Annihilation
 0	#Flag_Mix_Flavors
 0	#Flag_Asy_G2
-1	#Flag_MUMPS
+0	#Flag_MUMPS
 ---------------------
 1.0	#mass_1
-21	N_mu_1
-21	N_theta_1
+37	N_mu_1
+37	N_theta_1
 10.0	#Lambda_1
 ---------------------
-0.5     #mass_2
-41      #N_mu_2
-41      #N_theta_2
+0.9     #mass_2
+47      #N_mu_2
+47      #N_theta_2
 10.0     #Lambda_2
 ---------------------
-2.0     #mass_3
-21     #N_mu_3
-21     #N_theta_3
+1.1     #mass_3
+31     #N_mu_3
+31     #N_theta_3
 10.0     #Lambda_3
 
 		

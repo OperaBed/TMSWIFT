@@ -17,6 +17,7 @@ void eigensolver(PetscErrorCode ierr, params *params, Mat &H, int argc, char **a
   	PetscViewer    	viewer;
 	PetscInt rank;
 	PetscInt size;
+	PetscInt slice;
 	std::string eig_file_n;
 	std::ofstream eig_file;	
 	char ofile[100];
@@ -44,12 +45,12 @@ void eigensolver(PetscErrorCode ierr, params *params, Mat &H, int argc, char **a
   	ierr = KSPSetType(ksp,KSPPREONLY);CHKERRV(ierr);
   	ierr = KSPGetPC(ksp,&pc);CHKERRV(ierr);
   	ierr = PCSetType(pc,PCCHOLESKY);CHKERRV(ierr);
-	
+ 	slice = size/64;	
 	if(params->flag_mumps!=0)
 	{
 		ierr = EPSKrylovSchurSetPartitions(eps,size);CHKERRV(ierr);
 	}else{
-        	ierr = EPSKrylovSchurSetPartitions(eps,size/64);CHKERRV(ierr);
+        	ierr = EPSKrylovSchurSetPartitions(eps,slice);CHKERRV(ierr);
         	ierr = EPSKrylovSchurSetDetectZeros(eps,PETSC_TRUE);CHKERRV(ierr);  /* enforce zero detection */
         	ierr = PCFactorSetMatSolverPackage(pc,MATSOLVERMUMPS);CHKERRV(ierr);
         	ierr = PetscOptionsInsertString("-mat_mumps_icntl_13 1 -mat_mumps_icntl_24 1 -mat_mumps_cntl_3 1e-12");CHKERRV(ierr);
