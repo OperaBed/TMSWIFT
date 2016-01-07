@@ -23,9 +23,13 @@ plot: src/plot_wavefunctions.o chkopts
 	${CPPLINKER} -o plot_wavefunctions src/plot_wavefunctions.o  ${CPPFLAGS} ${SLEPC_EPS_LIB}
 	${RM} src/plot_wavefunctions.o
 
+input_maker: src/input_maker.o chkopts
+	${CPPLINKER} -o input_maker src/input_maker.o ${CPPFLAGS}
+	${RM} src/input_maker.o
+
 .PHONY: clean
 clean::
-	${RM} tmswift plot_wavefunctions analysis
+	${RM} tmswift plot_wavefunctions analysis input_maker
 
 #to change flags, use CXX_FLAGS in /home/user/petsc-3.6.0/arch-linux2-c-debug/lib/petsc/conf
 
