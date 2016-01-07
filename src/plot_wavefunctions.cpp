@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
 			ss << p.ofile_n << "n" << nev << "_f" << l << "_s" << m;
 			ss >> f_name;	
 		
-			std::cout << f_name << std::endl;
+//			std::cout << f_name << std::endl;
 			ifile.open(f_name.c_str());	
 	        	while (std::getline(ifile, line))
         		{
@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
 	for(int i=0;i<12*p.nf;i++)
         {
         	increm[i]=round_to_digits((max[i]-min[i])/5.0,2);
-	        std::cout << i << " " << round_to_digits(min[i],2) << " " << round_to_digits(max[i],2) << " " << round_to_digits(increm[i],2) << std::endl;
+//	        std::cout << i << " " << round_to_digits(min[i],2) << " " << round_to_digits(max[i],2) << " " << round_to_digits(increm[i],2) << std::endl;
         }
 	if(p.Jz==0){s=2;}else{s=4;}
 	gfile.open("plot_wave",std::ofstream::trunc);

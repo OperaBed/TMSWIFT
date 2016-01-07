@@ -1,5 +1,5 @@
-#CPPLINKER = ${PETSC_DIR}/${PETSC_ARCH}/bin/mpicxx
-CPPLINKER = mpicxx
+CPPLINKER = ${PETSC_DIR}/${PETSC_ARCH}/bin/mpicxx
+#CPPLINKER = mpicxx
 #CPPFLAGS  =  -std=c++0x -lgsl -lgslcblas
 CPPFLAGS  = -I${TACC_GSL_INC} -L${TACC_GSL_LIB} -std=c++0x -lgsl -lgslcblas
 

@@ -56,12 +56,14 @@ int main(int argc, char *argv[])
 	std::string outfilename;
 	std::string runfilename;
 	std::string filename;
+	std::ofstream run;
 	std::vector<double> var;
 	int counter = 0;
 	filename="init_";
 	runfilename="run_file";
 	outfilename="OUT/truem_";
 	
+	run.open(runfilename.c_str());
 	var.resize(21);
 
 	var[0]=1;//flavors
@@ -120,6 +122,7 @@ int main(int argc, char *argv[])
 		counter++;
 		filename="init_";
 		filename.append(std::to_string(counter));		
+		run << "~/Software/petsc-3.6.0/arch-linux2-c-opt/bin/mpiexec -np 4 ./tmswift " << filename << std::endl;
 		write_file(filename,outfilename,var);
 	}}}}}}}}
 	}

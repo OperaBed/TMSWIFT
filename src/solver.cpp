@@ -92,6 +92,7 @@ void eigensolver(PetscErrorCode ierr, params *params, Mat &H, int argc, char **a
   	ierr = PetscPrintf(PETSC_COMM_WORLD," Number of converged eigenpairs: %D\n",nconv);CHKERRV(ierr);
         ierr = PetscPrintf(PETSC_COMM_WORLD," Range of eigenpairs: %f to %f \n\n",lower,upper);CHKERRV(ierr);
 
+	eig_file.precision(12);
 
 	if (nconv>0) 
 	{
