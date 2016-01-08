@@ -76,6 +76,10 @@ int main(int argc, char *argv[])
 	var[7]=1;//Flag Asy g2
 	var[8]=1;//Flag mumps
 
+	auto var_alpha = std::vector<double> {0.3};
+	auto var_dis = std::vector<double> {1,2};
+	auto var_asy = std::vector<double> {0,1};
+
 	auto var_m = std::vector<std::vector<double>>
 	{
 		{1.0},
@@ -85,7 +89,7 @@ int main(int argc, char *argv[])
 	
 	auto var_nm = std::vector<std::vector<double>>
 	{
-		{5,9,11},
+		{13},
 		{0},
 		{0}
 	};
@@ -98,6 +102,13 @@ int main(int argc, char *argv[])
 	};
 
 	
+	for (auto i_alpha=var_alpha.begin();i_alpha!=var_alpha.end();i_alpha++){
+		var[2]=*i_alpha;
+	for (auto i_dis=var_dis.begin();i_dis!=var_dis.end();i_dis++){
+		var[3]=*i_dis;
+		var[4]=*i_dis;
+	for (auto i_asy=var_asy.begin();i_asy!=var_asy.end();i_asy++){
+		var[7]=*i_asy;
 	for (auto i_m=var_m[0].begin();i_m!=var_m[0].end();i_m++){
 		var[9]=*i_m;
 	for (auto j_m=var_m[1].begin();j_m!=var_m[1].end();j_m++){
@@ -125,8 +136,7 @@ int main(int argc, char *argv[])
 		//run << "~/Software/petsc-3.6.0/arch-linux2-c-opt/bin/mpiexec -np 4 ./tmswift " << filename << std::endl;
 		run << "mpiexec -np 2 ./tmswift " << filename << std::endl;
 		write_file(filename,outfilename,var);
-	}}}}}}}}
-	}
+	}}}}}}}}}}}}
 	std::cout << "------- " << counter << " input files produced --------" << std::endl;
 	return 0;
 }
