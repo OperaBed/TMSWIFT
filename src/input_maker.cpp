@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
 	int counter = 0;
 	filename="init_";
 	runfilename="run_file";
-	outfilename="OUT/truem_";
+	outfilename="OUT/truem";
 	
 	run.open(runfilename.c_str());
 	var.resize(21);
@@ -69,11 +69,11 @@ int main(int argc, char *argv[])
 	var[0]=1;//flavors
 	var[1]=0;//J_z
 	var[2]=0.3;//alpha
-	var[3]=2;//N_mu_dis
-	var[4]=2;//N_th_dis
+	var[3]=1;//N_mu_dis
+	var[4]=1;//N_th_dis
 	var[5]=0;//flag anni
 	var[6]=0;//Flag mix flavors
-	var[7]=0;//Flag Asy g2
+	var[7]=1;//Flag Asy g2
 	var[8]=1;//Flag mumps
 
 	auto var_m = std::vector<std::vector<double>>
@@ -85,14 +85,14 @@ int main(int argc, char *argv[])
 	
 	auto var_nm = std::vector<std::vector<double>>
 	{
-		{21,25,29,41},
+		{5,9,11},
 		{0},
 		{0}
 	};
 	
 	auto var_lam = std::vector<std::vector<double>>
 	{
-		{1,10,15,25},
+		{1},
 		{0},
 		{0}
 	};
@@ -122,7 +122,8 @@ int main(int argc, char *argv[])
 		counter++;
 		filename="init_";
 		filename.append(std::to_string(counter));		
-		run << "~/Software/petsc-3.6.0/arch-linux2-c-opt/bin/mpiexec -np 4 ./tmswift " << filename << std::endl;
+		//run << "~/Software/petsc-3.6.0/arch-linux2-c-opt/bin/mpiexec -np 4 ./tmswift " << filename << std::endl;
+		run << "mpiexec -np 2 ./tmswift " << filename << std::endl;
 		write_file(filename,outfilename,var);
 	}}}}}}}}
 	}
