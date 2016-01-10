@@ -1,5 +1,5 @@
-#cd ~/Desktop/stampededata/
-cd ~/Desktop/TMSWIFT/OUT/
+cd ~/Desktop/stampededata/
+#cd ~/Desktop/TMSWIFT/OUT/
 ls -l > temp1
 awk '$9~/_x/{print $9}' temp1 > ~/Desktop/TMSWIFT/temp2
 rm temp1
@@ -34,15 +34,15 @@ awk '{ gsub("\.","\\\."); print}' temp3 > temp2
 awk '{ gsub("\`","\\\`"); print}' temp2 > temp3
 cp temp3 result_list_we
 #mv temp2 temp3
-#awk '{print "if [ ! -f ~/Desktop/TMSWIFT/"$1" ]; then\n ./analysis ~/Desktop/stampededata/truem_" $1 "_ >" ,$1 "\nfi"}' temp3 > temp4
-awk '{print "if [ ! -f ~/Desktop/TMSWIFT/DATA_PROCESS/"$1" ]; then\n ./analysis ~/Desktop/TMSWIFT/OUT/truem_" $1 "_ >" ,"DATA_PROCESS/"$1 "\nfi"}' temp3 > temp4
+awk '{print "if [ ! -f ~/Desktop/TMSWIFT/DATA_PROCESS/"$1" ]; then\n ./analysis ~/Desktop/stampededata/truem_" $1 "_ >" ,"DATA_PROCESS/"$1 "\nfi"}' temp3 > temp4
+#awk '{print "if [ ! -f ~/Desktop/TMSWIFT/DATA_PROCESS/"$1" ]; then\n ./analysis ~/Desktop/TMSWIFT/OUT/truem_" $1 "_ >" ,"DATA_PROCESS/"$1 "\nfi"}' temp3 > temp4
 chmod +x temp4
 ./temp4
 awk '{print "echo \"",$1, "\"\n","awk \x27 NF==($1*4+7){print $0}\x27", "DATA_PROCESS/"$1,"\n"   ,"awk \x27 $4>0.01 && $2>3.84 && $2<3.95 \x27 ","DATA_PROCESS/"$1}' temp3 > temp5
 chmod +x temp5
 #./temp5
 ./temp5 > temp6
-awk '$1~/:/&&NF>1{print $2, $6, $8 } NF==1{print} NF==($1*4+7){print $0}' temp6 > temp7
+ awk '$1~/:/&&NF>1&&$5~/f/&&$7~/f/{print $2, $6, $8 } $1~/:/&&NF>1&&$6~/f/&&$8~/f/{print $2, $7, $9 } $1~/:/&&NF>1&&$7~/f/&&$9~/f/{print $2, $8, $10 } NF==1{print} NF==($1*4+7){print $0}' temp6 > temp7
 awk '$1~/_/{if (x)print x;x="";}{x=(!x)?$0:x" "$0;}END{print x;}' temp7 > temp8
-awk 'NF==(8+$2*10){print $0}NF!=(8+$2*10){print "#WARNING"$0}' temp8 > f_d_data
+awk 'NF==(14+$2*4){print $0}NF!=(14+$2*4){print "#WARNING"$0}' temp8 > f_d_data
 #rm temp*
