@@ -102,8 +102,8 @@ int main(int argc, char *argv[])
 					prob[l]+=evec_r[o+index]*evec_r[o+index];
 					k_exp+=k[0+index_p]*evec_r[o+index]*evec_r[o+index];
 					k2_exp+=k[0+index_p]*k[0+index_p]*evec_r[o+index]*evec_r[o+index];
-					dc_scalar+=1.0/asy[0+index_p]*(evec_r[1+index]-evec_r[2+index]);
-					dc_pseudo+=1.0/asy[0+index_p]*(evec_r[1+index]+evec_r[2+index]);
+					dc_scalar+=1.0/asy[0+index_p]/std::sqrt(x[0+index_p]*(1.0-x[0+index_p]))*(evec_r[1+index]-evec_r[2+index]);
+					dc_pseudo+=1.0/asy[0+index_p]/std::sqrt(x[0+index_p]*(1.0-x[0+index_p]))*(evec_r[1+index]+evec_r[2+index]);
 				}
 				f0 << x[0+index_p] << " " << k[0+index_p] << " " << asy[0+index_p] << " " << evec_r[0+index] << std::endl;
 				f1 << x[1+index_p] << " " << k[1+index_p] << " " << asy[1+index_p] << " " << evec_r[1+index] << std::endl;
@@ -122,7 +122,7 @@ int main(int argc, char *argv[])
 			f2.close();
 			f3.close();
 		}
-		std::cout << std::setw(5) << i << ": " << std::setw(10) << eval[i] << " -- ";
+		std::cout << std::setw(5) << i << ": " << std::setw(10) << std::setprecision(12) << eval[i] << " -- " << std::setprecision(6);
 		for(int o=0;o<p.nf;++o)
 		{
 			std::cout << std::setw(12) << prob[o] << "   ";
