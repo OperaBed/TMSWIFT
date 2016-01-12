@@ -71,11 +71,12 @@ void eigensolver(PetscErrorCode ierr, params *params, Mat &H, int argc, char **a
   	ierr = EPSSetFromOptions(eps);CHKERRV(ierr);
 // 	ierr = EPSSetWhichEigenpairs(eps,EPS_SMALLEST_REAL);
 
+   	ierr = EPSSolve(eps);CHKERRV(ierr);
+
 	ierr = MatCreateVecs(H,NULL,&xr);CHKERRV(ierr);
 	ierr = MatCreateVecs(H,NULL,&xi);CHKERRV(ierr);
 
 
-   	ierr = EPSSolve(eps);CHKERRV(ierr);
 
    	ierr = EPSGetIterationNumber(eps,&its);CHKERRV(ierr);
   	ierr = PetscPrintf(PETSC_COMM_WORLD," Number of iterations of the method: %D\n",its);CHKERRV(ierr);

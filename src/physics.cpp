@@ -83,7 +83,7 @@ PetscReal general_spin(h_params *hp)
 		}
 	}
 
-	if(hp->flag_anni==0 || std::abs(hp->Jz)<2){result+=anni_spin(hp);}
+	if(hp->flag_anni==0 && std::abs(hp->Jz)<2){result+=anni_spin(hp);}
 
 	return result;
 }
