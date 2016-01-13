@@ -76,9 +76,9 @@ int main(int argc, char *argv[])
 	var[7]=1;//Flag Asy g2
 	var[8]=1;//Flag mumps
 
-	auto var_alpha = std::vector<double> {0.3};
-	auto var_dis = std::vector<double> {1,2};
-	auto var_asy = std::vector<double> {0,1};
+	auto var_alpha = std::vector<double> {0.01,0.07,0.1};
+	auto var_dis = std::vector<double> {1};
+	auto var_asy = std::vector<double> {0};
 
 	auto var_m = std::vector<std::vector<double>>
 	{
@@ -96,7 +96,7 @@ int main(int argc, char *argv[])
 	
 	auto var_lam = std::vector<std::vector<double>>
 	{
-		{1},
+		{5,10,20},
 		{0},
 		{0}
 	};
