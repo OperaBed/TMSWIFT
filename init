@@ -1,7 +1,7 @@
 OUT/truem	#outputfile
 1	#number_of_flavors
 0	#J_z
-0.3	#alpha
+0.01	#alpha
 1	#N_mu_dis
 1	#N_theta_dis
 0	#Flag_Annihilation
@@ -10,9 +10,9 @@ OUT/truem	#outputfile
 1	#Flag_MUMPS
 ---------------------
 1.0	#mass_1
-27	N_mu_1
-27	N_theta_1
-1.0	#Lambda_1
+11	N_mu_1
+11	N_theta_1
+0.5	#Lambda_1
 ---------------------
 0.9     #mass_2
 47      #N_mu_2

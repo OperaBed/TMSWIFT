@@ -1,5 +1,5 @@
-cd ~/Desktop/stampededata/
-#cd ~/Desktop/TMSWIFT/OUT/
+#cd ~/Desktop/stampededata/
+cd ~/Desktop/TMSWIFT/OUT/
 ls -l > temp1
 awk '$9~/_x/{print $9}' temp1 > ~/Desktop/TMSWIFT/temp2
 rm temp1
@@ -32,27 +32,23 @@ awk '{ gsub("\#","\\\#"); print}' temp3 > temp2
 awk '{ gsub("\$","\\\$"); print}' temp2 > temp3
 awk '{ gsub("\.","\\\."); print}' temp3 > temp2
 awk '{ gsub("\`","\\\`"); print}' temp2 > temp3
+awk '{ gsub("\?","\\\?"); print}' temp3 > temp2
+mv temp2 temp3
 cp temp3 result_list_we
-#mv temp2 temp3
-awk '{print "if [ ! -f ~/Desktop/TMSWIFT/DATA_PROCESS/"$1" ]; then\n ./analysis ~/Desktop/stampededata/truem_" $1 "_ >" ,"DATA_PROCESS/"$1 "\nfi"}' temp3 > temp4
-#awk '{print "if [ ! -f ~/Desktop/TMSWIFT/DATA_PROCESS/"$1" ]; then\n ./analysis ~/Desktop/TMSWIFT/OUT/truem_" $1 "_ >" ,"DATA_PROCESS/"$1 "\nfi"}' temp3 > temp4
+#awk '{print "if [ ! -f ~/Desktop/TMSWIFT/DATA_PROCESS/"$1" ]; then\n ./analysis ~/Desktop/stampededata/truem_" $1 "_ >" ,"DATA_PROCESS/"$1 "\nfi"}' temp3 > temp4
+awk '{print "if [ ! -f ~/Desktop/TMSWIFT/DATA_PROCESS/"$1" ]; then\n ./analysis ~/Desktop/TMSWIFT/OUT/truem_" $1 "_ >" ,"DATA_PROCESS/"$1 "\nfi"}' temp3 > temp4
 chmod +x temp4
 ./temp4
 #alpha=0.3
-awk -vel=3.84 -veh=3.95 '{print "echo \"",$1, "\"\n","awk \x27 NF==($1*4+8)&&$3!~/-/{print $0}\x27", "DATA_PROCESS/"$1,"\n"   ,"awk \x27 $4>0.01 && $2>"el" && $2<"eh" \x27 ","DATA_PROCESS/"$1}' temp3 > temp5c1
-#alpha=0.1
-awk -vel=3.989 -veh=3.991 '{print "echo \"",$1, "\"\n","awk \x27 NF==($1*4+8)&&$3!~/-/{print $0}\x27", "DATA_PROCESS/"$1,"\n"   ,"awk \x27 $4>0.01 && $2>"el" && $2<"eh" \x27 ","DATA_PROCESS/"$1}' temp3 > temp5c2
-#alpha=0.07
-awk -vel=3.994 -veh=3.996 '{print "echo \"",$1, "\"\n","awk \x27 NF==($1*4+8)&&$3!~/-/{print $0}\x27", "DATA_PROCESS/"$1,"\n"   ,"awk \x27 $4>0.01 && $2>"el" && $2<"eh" \x27 ","DATA_PROCESS/"$1}' temp3 > temp5c3
-#alpha=0.01
-awk -vel=3.9998 -veh=3.99995 '{print "echo \"",$1, "\"\n","awk \x27 NF==($1*4+8)&&$3!~/-/{print $0}\x27", "DATA_PROCESS/"$1,"\n"   ,"awk \x27 $4>0.01 && $2>"el" && $2<"eh" \x27 ","DATA_PROCESS/"$1}' temp3 > temp5c4
-cat temp5c* > temp5
+#awk -vel=1.6 -veh=0.80 '{print "echo \"",$1,"\"\n","awk \x27  NF==($1*4+8)&&$3!~/-/{print $0; alpha=$3} ($6>2e-5 || $8>2e-5) && $6!=$8 && $4>0.01 && $2>(2.0-alpha*alpha/4.0*"el")^2 && $2<(2.0-alpha*alpha/4.0*"eh")^2{print $0} \x27 ","DATA_PROCESS/"$1}' temp3 > temp5
+awk -velo=1.2 -velc=3.333 -veho=0.80 -vehc=1 '{print "echo \"",$1,"\"\n","awk \x27  NF==($1*4+8)&&$3!~/-/{print $0; alpha=$3} NF>6 &&($(NF-4)>2e-5 || $(NF-6)>2e-5) && $(NF-4)!=$(NF-6) && $4>0.01 && $2>(2.0-alpha*alpha/4.0*("elo"+alpha*alpha*"elc"))^2 && $2<(2.0-alpha*alpha/4.0*("eho"+alpha*alpha*"ehc"))^2{print $0} \x27 ","DATA_PROCESS/"$1}' temp3 > temp5
 chmod +x temp5
 #./temp5
 ./temp5 > temp6
  awk '$1~/:/&&NF>1&&$5~/f/&&$7~/f/{print $2, $6, $8 } $1~/:/&&NF>1&&$6~/f/&&$8~/f/{print $2, $7, $9 } $1~/:/&&NF>1&&$7~/f/&&$9~/f/{print $2, $8, $10 } NF==1{print} NF==($1*4+8)&&$3!~/-/{print $0}' temp6 > temp7
 awk '$1~/_/{if (x)print x;x="";}{x=(!x)?$0:x" "$0;}END{print x;}' temp7 > temp8
 awk 'NF==(15+$2*4)&&$2==3{print $0} NF==(15+$2*4)&&$2==2{print $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,0,0,0,0,$18,$19,$20,$21,$22,$23} NF==(15+$2*4)&&$2==1{print $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,0,0,0,0,0,0,0,0,$14,$15,$16,$17,$18,$19}NF!=(15+$2*4){print "#WARNING"$0}' temp8 > temp9
-awk '$1!~/WARN/{print $0}' temp9 > temp10
-sort temp10 -n -k 4 -k 10 -k 12 > f_d_data
-rm temp*
+#awk '$1!~/WARN/&&(($4>.025&&$22<((2.0-$4*$4/4.0)*(2.0-$4*$4/4.0)+0.0006)&&$22>((2.0-$4*$4/4.0)*(2.0-$4*$4/4.0)-0.0006))||($4<.025&&$22<((2.0-$4*$4/4.0)*(2.0-$4*$4/4.0)+0.00025)&&$22>((2.0-$4*$4/4.0)*(2.0-$4*$4/4.0)-0.00025))) {print $0}' temp9 > temp10 
+awk '$1!~/WARN/ {print $0}' temp9 > temp10 
+sort temp10 -n -k 4 -k 11 -k 13 -k 14 -k 15 -k 17 > f_d_data
+#rm temp*

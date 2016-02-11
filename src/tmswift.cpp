@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
 
 		hamiltonian(ierr,&params,H);
 // 		ierr = PetscViewerSetFormat(PETSC_VIEWER_STDOUT_WORLD,PETSC_VIEWER_ASCII_DENSE);//DENSE<-->COMMON
-	      	MatView(H,PETSC_VIEWER_STDOUT_WORLD);
+//	      	MatView(H,PETSC_VIEWER_STDOUT_WORLD);
 	}
 
 	cleanup(ierr,&params);	
