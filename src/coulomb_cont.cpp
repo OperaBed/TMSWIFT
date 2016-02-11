@@ -113,10 +113,11 @@ void coulomb_trick(PetscErrorCode ierr, params *params)
 	ierr = VecGetOwnershipRange(params->CT,&start,&end);CHKERRV(ierr);
 	PetscInt step;
 	step=1;
-	if(params->Jz==0){step=2;}       
+	if(params->Jz==0){step=2;start=start+(start%2);}       
 	gsl_integration_cquad_workspace *work = gsl_integration_cquad_workspace_alloc(int_params.N_work);
  	for (PetscInt i=start; i<end; i+=step)
 	{
+
 		//if((i-start)%((end-start)/10)==0){ierr = PetscPrintf(PETSC_COMM_SELF,"----Cc: r%d -> %d\\%d\n",rank,(i-start),(end-start));CHKERRV(ierr);}
 //		if(params->Jz !=0 || i%2==0){
 		get_index(i,&int_params,params);
@@ -157,7 +158,9 @@ void coulomb_trick(PetscErrorCode ierr, params *params)
 				ishift=i+(3-2*int_params.index_s);
 	      			ierr  = VecSetValues(params->CT,1,&ishift,&coul_result,ADD_VALUES);CHKERRV(ierr);
 			}
+
 //		}
+//	        ierr = PetscPrintf(PETSC_COMM_SELF,"Pts: %d %d %f %f %f\n",int_params.index_m,int_params.index_t,int_params.mu2,int_params.th2,coul_result);CHKERRV(ierr);
 		if((i-start)%((end-start)/4)==0){ierr = PetscPrintf(PETSC_COMM_SELF,"|");CHKERRV(ierr);}
 	}
         gsl_integration_cquad_workspace_free(work);
