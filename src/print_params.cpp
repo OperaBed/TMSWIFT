@@ -25,7 +25,7 @@ void print_input(PetscErrorCode ierr, params *params)
         }
         ierr = PetscPrintf(PETSC_COMM_WORLD,"\n------------\n");CHKERRV(ierr);
 
-	ierr = PetscPrintf(PETSC_COMM_WORLD,"%d %d %g %d %d %d %d %d",params->nf,params->Jz,params->flag_nm_dis,params->alpha,params->flag_anni,params->flag_mix,params->flag_asy,params->flag_mumps);CHKERRV(ierr);
+	ierr = PetscPrintf(PETSC_COMM_WORLD,"%d %d %g %d %d %d %d %d",params->nf,params->Jz,params->alpha,params->flag_nm_dis,params->flag_nt_dis,params->flag_anni,params->flag_mix,params->flag_asy,params->flag_mumps);CHKERRV(ierr);
 	for( int i=0;i<params->nf;i++){ierr = PetscPrintf(PETSC_COMM_WORLD," %g %d %d %g",params->m[i],params->nm[i],params->nt[i],params->lambda[i]);CHKERRV(ierr);}
         ierr = PetscPrintf(PETSC_COMM_WORLD,"\n------------\n");CHKERRV(ierr);
 
